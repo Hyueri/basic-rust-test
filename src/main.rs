@@ -1,9 +1,9 @@
-//ga akan bisa dirun karena ada 3 main function (yajelas lah ya, aneh bet kalo nyoba dirun)
 
 //basic / awalan rust isiny gini
 fn main() {
     println!("Hello, world!");
 
+//ga akan bisa dirun karena ada 3 main function (yajelas lah ya, aneh bet kalo nyoba dirun)
 
 
 //pake println! macro munculin line kebawah
@@ -22,7 +22,7 @@ fn main() {
 
 
 
-///////////////////////////////////////////////////////////////////////
+
 
 //Variabel
 
@@ -48,8 +48,6 @@ fn main() {
     x = 20;
     println!("after: {}", x);
 
-
-//////////////////////////////////////////////////////////////////////
 
 //tipe data
 /* ga kaya C/Java, rust ga perlu deklarasi tipe data, tapi bisa juga deklarasi tipe data biar lebih jelas. Contohnya*/
@@ -251,5 +249,288 @@ fn main() {
         6 | 7 => println!("It's weekend."),
         _ => println!("Invalid day."),
     }
+
+//match with returned value
+//match bisa juga mengembalikan value, jadi bisa disimpan ke variabel
+
+    let day = 6;
+
+    let day_type = match day {
+        1 | 2 | 3 | 4 | 5 => "weekday",
+        6 | 7 => "weekend",
+        _ => "invalid day",
+    };
+
+    println!("day type: {}", day_type);
+
+
+//Loops
+//dipake untuk melakukan perulangan, ada 3 jenis loop di rust, yaitu loop, while, dan for. contoh
+
+
+
+//    loop {
+//        println!("This loops forever, ya know?.");
+//    }
+
+//kasih break biar ga looping terus
+
+    let mut count = 0;
+
+    loop {
+        count += 1;
+        println!("count: {}", count);
+
+        if count == 5 {
+            break;
+        }
+    }
+
+//selain cuma ngeloop, bisa juga buat returned value
+
+    let mut count = 1;
+    let result = loop {
+        println!("Hit!");
+        if count == 5 {
+            break count;
+        }
+        count += 1;
+    };
+    println!("The button was hit {} times.", result);
+
+// while loop
+// looping selama kondisi terpenuhi
+
+    let mut count = 1;
+
+    while count < 5 {
+        println!("count: {}", count);
+        count += 1;
+    }
+
+//stop while loop pake break
+
+    let mut num = 1;
+
+    while num < 5 {
+        println!("count: {}", num);
+        if num == 3 {
+            break;
+        }
+        num += 1;
+    }
+
+//skip value pake continue
+
+    let mut num = 1;
+
+    while num <= 8 {
+        if num == 3 {
+            num += 1;
+            continue;
+        }
+        println!("No. {}", num);
+        num += 1;
+    }
+    println!("did i accidentally skip a number?");
+    
+
+//for loop
+// dipake kalo tau jumlah perulangannya, misal mau looping dari 1 sampe 5, pake for loop aja
+
+    for num in 1..6 {
+        println!("num. {}", num);
+    }
+
+//cuma ngeprint 1 - 5, karena range nya 1..6, kalo mau sampe 6 pake 1..=6 alias inclusive range
+
+    for num in 1..=6 {
+        println!("num. {}", num);
+    }
+
+//for loop continue and break
+
+    for num in 1..=8 {
+        if num == 3 {
+            continue;
+        }
+        if num == 6 {
+            break;
+        }
+        println!("num. {}", num);
+    }
+    println!("now tell me, what number did i skip? and what number did i stop at?");
+
+//Functions
+//blok kode yang hanya bisa jalan kalo dipanggil
+
+//basic function
+
+/*    fn func_name() {
+        println!("This is a function.");
+    } */
+
+
+//Cara panggil function
+
+    fn greet() {
+        println!("Hello, World!");
+    }
+
+    greet(); //panggil function greet
+
+//function with parameters
+
+    fn call(name: &str) {
+        println!("greeting, {}!", name);
+    }
+
+    call("Aria"); //panggil function call dengan parameter "Aria"
+
+//return value func
+//pake simbol -> di function header
+
+    fn plus(x: i32, y: i32) -> i32 {
+        x + y // bisa juga ditulis  return x + y;
+    }
+    let result = plus(5, 10);
+    println!("5 + 10 = {}", result);
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+//Scope and Shadowing
+/*scope itu batasan, karena variabel itu hidup di block yang didalamnya >>> {}
+contoh :
+
+#variable didalam function
+
+    fn myfunc() {
+        let x = 5; //x hidup di block ini
+        println!("x = {}", x); //bisa karena dia didalam scope / {}
+}
+    myfunc();
+    println!("x = {}", x); //error, karena x ga hidup di block ini
+
+#variable didalam block
+
+    let score = 5; //score hidup di block ini
+    {
+        let score = 10; //score hidup di block ini
+        println!("score = {}", score); //bisa karena dia didalam scope / {}
+    }
+    println!("score = {}", score); //bisa karena dia didalam scope / {}
+
+*/
+
+// di rust, bisa deklarasi variable baru dengan nama sama menggunakan let. ini disebut shadowing, contoh :
+
+    let x = 5;
+    let x = 10; //shadowing
+    println!("Shadowing: {}", x);// 10 yang keprint,variable pertama tidak bisa diakses karena langsung tertimpa variable kedua. karena rust tidak membolehkan nama yang sama pada setiap variable 
+
+/*bukti 
+    ||
+    \/
+
+warning: unused variable: `x`                                                                                  
+   --> src\main.rs:429:9
+    |
+429 |     let x = 5;
+    |         ^ help: if this is intentional, prefix it with an underscore: `_x`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+*/
+
+//selain itu, bisa juga dipakai didalam block
+
+    let x = 5;
+    {
+        let x = 10; //shadowing
+        println!("inside block: {}", x); 
+    }
+    println!("outside block: {}", x); 
+
+//String
+/*
+
+ada dua cara nulis string
+
+&str dan string 
+
+&str dipakai kalo itu udah fix
+string dipakai kalo butuh berubah ubah 
+
+*/
+
+//contoh
+
+    let greet: &str="hello";
+
+    println!("{}", greet);
+
+
+// buat string pakai to_string() atau String::from() func
+
+    let text1 ="hunt begins".to_string();
+    println!("{}", text1);
+
+    let text2 = String::from("Hunt Begins");
+    println!("{}", text2);
+
+//ubah value string
+//string itu mutable, jadi bisa pake mut. 
+// pake .push_str() untuk nambah text
+// pakai .push() kalo cuma 1 huruf
+
+    let mut greet = String::from("I Am Thou,");
+    greet.push_str(" Thou Art I...");
+    println!("{}", greet);
+    
+    let mut speak =String::from("Persona");
+    speak.push('!');
+    println!("{}", speak);    
+
+//Concatenate Strings
+//nyambungin banyak string sekaligus pakai "format!"
+
+    let w1 = String::from("Heed");
+    let w2 = String::from("My");
+    let w3 = String::from("Command!");
+    
+    let result = format!("{} {} {}", w1, w2, w3);
+    println!("{}", result);
+
+//String length 
+//nyari banyak huruf dalam 1 string
+
+    let name = String::from("Big Boss");
+    println!("banyak huruf dari nama '{}': {}", name, name.len());
+
+//ownership
+//setiap value punya owner masing masing, dan biasanya itu variable
+
+    let x = String::from("dokkaebi");
+    let y = x ;//value dipindah dari x ke y, x jadi tidak valid
+
+    println!("{}", y);
+
+//tapi jika yang dipakai adalah nomor simpel, maka tidak akan invalid melainkan akan melakukan copy
+
+    let a = 6;
+    let b = a;
+
+    println!("a {}", a);//valid semua
+    println!("b {}", b);//valid semua
+
+//clone 
+//bedanya ya sesuai nama cuma ngeclone ga ngilangin value lain
+
+    let r = 4;
+    let f = r.clone();
+
+    println!("r {}", r);
+    println!("f {}", f);
 
 }
